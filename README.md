@@ -4,7 +4,7 @@
 
 # Figma → Prototype
 
-[![skills.sh](https://skills.sh/b/vbirla789/figma-to-prototype)](https://skills.sh/vbirla789/figma-to-prototype)
+[![Install](https://img.shields.io/badge/npx_skills_add-vbirla789%2Ffigma--to--prototype-111111?style=flat-square)](#install) [![License: MIT](https://img.shields.io/badge/license-MIT-111111?style=flat-square)](LICENSE)
 
 Skills for designers who ship prototypes from Figma.
 
