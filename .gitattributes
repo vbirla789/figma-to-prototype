@@ -1,0 +1,6 @@
+# Count the skills' guides as the repo's language (like a docs repo), not the starter template code
+skills/**/*.md linguist-detectable
+README.md linguist-documentation
+*-cheatsheet.md linguist-documentation
+skills/**/assets/** linguist-vendored
+skills/**/scripts/** linguist-vendored
