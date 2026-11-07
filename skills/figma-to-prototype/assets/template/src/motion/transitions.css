@@ -1,0 +1,61 @@
+/*
+ * Route transitions (View Transitions API) + press feedback.
+ * The direction is chosen per navigation with useGo(): push / pop / up / down / fade / none.
+ * Only the .phone-screen box (view-transition-name: screen) animates, so mock
+ * bars stay still. Browsers without View Transitions just switch instantly.
+ */
+::view-transition-group(screen) { animation-duration: var(--spring-move-ms); }
+::view-transition-old(screen),
+::view-transition-new(screen) { mix-blend-mode: normal; height: 100%; }
+
+/* push: new screen slides in from the right, old one drifts left underneath */
+html[data-vt='push']::view-transition-new(screen) {
+  animation: vt-in-right var(--spring-move-ms) var(--spring-move) both;
+}
+html[data-vt='push']::view-transition-old(screen) {
+  animation: vt-out-left var(--spring-move-ms) var(--spring-move) both;
+}
+/* pop: the reverse; the leaving screen is on top */
+html[data-vt='pop']::view-transition-old(screen) {
+  z-index: 1;
+  animation: vt-out-right var(--spring-move-ms) var(--spring-move) both;
+}
+html[data-vt='pop']::view-transition-new(screen) {
+  animation: vt-in-left var(--spring-move-ms) var(--spring-move) both;
+}
+/* up: full-screen modal rises; down: it drops away */
+html[data-vt='up']::view-transition-new(screen) {
+  animation: vt-in-up var(--spring-move-ms) var(--spring-move) both;
+}
+html[data-vt='up']::view-transition-old(screen) { animation: none; }
+html[data-vt='down']::view-transition-old(screen) {
+  z-index: 1;
+  animation: vt-out-down var(--ms-reveal) var(--ease-in) both;
+}
+html[data-vt='down']::view-transition-new(screen) { animation: none; }
+/* fade: tabs and in-place swaps */
+html[data-vt='fade']::view-transition-old(screen) { animation: vt-fade-out var(--ms-fadeOut) var(--ease-in) both; }
+html[data-vt='fade']::view-transition-new(screen) { animation: vt-fade-in var(--ms-fadeIn) var(--ease-out) both; }
+
+@keyframes vt-in-right { from { transform: translateX(100%); } }
+@keyframes vt-out-left { to { transform: translateX(-30%); } }
+@keyframes vt-out-right { to { transform: translateX(100%); } }
+@keyframes vt-in-left { from { transform: translateX(-30%); } }
+@keyframes vt-in-up { from { transform: translateY(100%); } }
+@keyframes vt-out-down { to { transform: translateY(100%); } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+@keyframes vt-fade-out { to { opacity: 0; } }
+
+/* press feedback: add className="press" (or press--wide / press--icon) to anything tappable */
+.press, .press--wide, .press--icon {
+  transition: transform var(--spring-snappy-ms) var(--spring-snappy);
+}
+.press:active { transform: scale(var(--press-control)); transition-duration: var(--ms-press); }
+.press--wide:active { transform: scale(var(--press-wide)); transition-duration: var(--ms-press); }
+.press--icon:active { transform: scale(var(--press-icon)); transition-duration: var(--ms-press); }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-vt]::view-transition-new(screen) { animation: vt-fade-in 120ms linear both; }
+  html[data-vt]::view-transition-old(screen) { animation: vt-fade-out 120ms linear both; }
+  .press:active, .press--wide:active, .press--icon:active { transform: none; }
+}

@@ -1,0 +1,126 @@
+/* ---------- desktop: phone mockup on a stage ---------- */
+.phone-stage {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #e9eaee;
+}
+
+.phone-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--frame-w);
+  /* never taller than the laptop window — the screen scrolls inside */
+  height: min(var(--frame-h), calc(100dvh - 80px));
+  min-height: 480px;
+  flex-shrink: 0;
+  border-radius: 44px;
+  overflow: hidden;
+  /* makes position:fixed children anchor to the mockup, not the browser
+     window — otherwise a fixed overlay escapes the frame on a laptop */
+  transform: translateZ(0);
+  background: var(--chrome-bg);
+  box-shadow: 0 32px 64px rgba(16, 22, 40, 0.16), 0 4px 16px rgba(16, 22, 40, 0.08);
+}
+
+.phone-status {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--status-h);
+  padding: 0 26px 0 32px;
+  background: var(--chrome-bg);
+  color: var(--chrome-fg);
+}
+.phone-status__time { font: 600 15px/1 -apple-system, system-ui, sans-serif; letter-spacing: -0.3px; }
+.phone-status__icons { display: flex; align-items: center; gap: 6px; }
+
+.phone-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* screens scroll inside here, never the page */
+.phone-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  view-transition-name: screen;
+}
+.phone-screen::-webkit-scrollbar { display: none; }
+
+.phone-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+.phone-overlay > * { pointer-events: auto; }
+
+.phone-home {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  height: var(--home-h);
+  align-items: flex-end;
+  padding-bottom: 8px;
+  background: var(--chrome-bg);
+}
+.phone-home__bar {
+  width: 134px;
+  height: 5px;
+  border-radius: 100px;
+  background: var(--chrome-fg);
+}
+
+/* ---------- real phone: drop every piece of mockup chrome ----------
+   narrow portrait screens, and short touch screens (a phone in landscape) */
+@media (max-width: 520px), (pointer: coarse) and (max-height: 520px) {
+  .phone-stage {
+    padding: 0;
+    background: var(--chrome-bg);
+  }
+  .phone-shell {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    border-radius: 0;
+    box-shadow: none;
+    /* the real status bar and home bar live here now */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .phone-status,
+  .phone-home {
+    display: none;
+  }
+}
+
+/* ---------- capture mode (tools/compare.mjs) ----------
+   exactly the viewport, no stage, no rounding, no shadow */
+html[data-capture] .phone-stage { padding: 0; min-height: 0; }
+html[data-capture] .phone-shell {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+html[data-capture] .phone-status { display: flex; }
+html[data-capture] .phone-home { display: flex; }
+html[data-capture='screen'] .phone-status,
+html[data-capture='screen'] .phone-home { display: none; }

@@ -1,0 +1,40 @@
+/* Reset + the small fixes that make a web prototype feel native on a phone. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body, system-ui, -apple-system, sans-serif);
+  color: var(--text-primary, #000);
+  background: var(--page-bg, #fff);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* iOS: don't inflate text in landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+/* no grey flash on tap, no 300ms double-tap-zoom delay */
+* { -webkit-tap-highlight-color: transparent; }
+a, button, input, select, textarea, label, [role='button'] { touch-action: manipulation; }
+
+/* app mode: the page itself never scrolls or rubber-bands — screens scroll */
+html[data-mode='app'], html[data-mode='app'] body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+
+img, svg, video { display: block; max-width: 100%; }
+img { -webkit-user-drag: none; user-select: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+/* long-press on a control shouldn't select its label */
+button, [role='button'] { -webkit-user-select: none; user-select: none; }
+input, textarea, select { font: inherit; color: inherit; }
+/* iOS zooms the page when focusing an input under 16px */
+@media (pointer: coarse) {
+  input, textarea, select { font-size: max(16px, 1em); }
+}
+h1, h2, h3, h4, h5, h6, p, figure, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+
+/* hover styles only where hover exists — no sticky hover after a tap */
+@media (hover: none) {
+  .hover-only { display: none; }
+}
+
+:focus-visible { outline: 2px solid var(--focus-ring, #2b6cff); outline-offset: 2px; }

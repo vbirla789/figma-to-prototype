@@ -1,0 +1,33 @@
+/* Visual values (radius, grabber, padding, scrim colour) are placeholders —
+   replace them with the Figma sheet's values. */
+.sheet-layer { position: absolute; inset: 0; z-index: 10; }
+.sheet__scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4); }
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: calc(100% - 48px);
+  display: flex;
+  flex-direction: column;
+  background: var(--page-bg, #fff);
+  border-radius: 16px 16px 0 0;
+  touch-action: none;
+  will-change: transform;
+  /* on a real phone, keep the content clear of the home bar */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.sheet__grabber {
+  flex-shrink: 0;
+  width: 36px;
+  height: 4px;
+  margin: 8px auto 4px;
+  border-radius: 100px;
+  background: rgba(0, 0, 0, 0.16);
+}
+.sheet__body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}

@@ -1,0 +1,10 @@
+/*
+ * Design tokens copied from the Figma file (get_variable_defs). Use the
+ * Figma variable names so a designer can find them: "Text/Primary" →
+ * --text-primary. Raw hex values in components are a smell — put them here.
+ */
+:root {
+  --font-body: system-ui, -apple-system, sans-serif;
+  --page-bg: #ffffff;
+  --text-primary: #000000;
+}
